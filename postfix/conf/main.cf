@@ -396,7 +396,7 @@ smtpd_tls_key_file = /cert/privkey.pem
 smtpd_helo_required=yes
 
 smtpd_sasl_type = dovecot
-smtpd_sasl_path = private/auth
+smtpd_sasl_path = inet:dovecot:12345
 smtpd_sasl_security_options = noanonymous
 broken_sasl_auth_clients = yes
 smtpd_sasl_auth_enable = yes

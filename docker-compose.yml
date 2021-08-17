@@ -1,37 +1,47 @@
 version: '3'
 
 services:
-  mail:
-    build: mail
+  postfix:
+    build: postfix
     depends_on:
       - database
     restart: always
+    env_file: 
+      - .env
     environment: 
-      - MAIL_HOSTNAME=s2.ehaupt.de
-      - MAIL_DOMAIN=ehaupt.de
-      - SQL_USER=mail
-      - SQL_PASSWORD=postfix
       - SQL_HOST=database
-      - SQL_DB=mail
     ports:
       - "25:25"
-      - "587:587"
       - "465:465"
+      - "587:587"
+    volumes:
+      - "${CERT_LOCATION_CHAIN}:/cert/fullchain.pem:ro"
+      - "${CERT_LOCATION_KEY}:/cert/privkey.pem:ro"
+
+  dovecot:
+    build: dovecot
+    depends_on:
+      - database
+    restart: always
+    env_file: 
+      - .env
+    environment: 
+      - SQL_HOST=database
+    ports:
       - "143:143"
       - "993:993"
     volumes:
-      - ./fullchain.pem:/cert/fullchain.pem:ro
-      - ./privkey.pem:/cert/privkey.pem:ro
+      - "${CERT_LOCATION_CHAIN}:/cert/fullchain.pem:ro"
+      - "${CERT_LOCATION_KEY}:/cert/privkey.pem:ro"
       - mailStore:/var/vmail
-
 
   database:
     image: postgres:13
     restart: always
     environment:
-      POSTGRES_DB: mail
-      POSTGRES_USER: mail
-      POSTGRES_PASSWORD: postfix
+      POSTGRES_DB: "${SQL_DB}"
+      POSTGRES_USER: "${SQL_USER}"
+      POSTGRES_PASSWORD: "${SQL_PASSWORD}"
     volumes:
       - dbStore:/var/lib/postgresql/data
 
@@ -45,10 +55,10 @@ services:
     environment:
       POSTFIXADMIN_DB_TYPE: pgsql
       POSTFIXADMIN_DB_HOST: database
-      POSTFIXADMIN_DB_NAME: mail
-      POSTFIXADMIN_DB_USER: mail
-      POSTFIXADMIN_DB_PASSWORD: postfix
-      POSTFIXADMIN_SETUP_PASSWORD: '$$2y$$10$$YTl0yAU7RIajgxzUrs3YTeGWVczAgnch5Uj2.oDcKt2EQi8xVIXdC'
+      POSTFIXADMIN_DB_NAME: "${SQL_DB}"
+      POSTFIXADMIN_DB_USER: "${SQL_USER}"
+      POSTFIXADMIN_DB_PASSWORD: "${SQL_PASSWORD}"
+      POSTFIXADMIN_SETUP_PASSWORD: "${POSTFIXADMIN_SETUP_PASSWORD}"
 
 volumes: 
   mailStore: {}

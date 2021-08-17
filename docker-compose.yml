@@ -5,6 +5,7 @@ services:
     build: mail
     depends_on:
       - database
+    restart: always
     environment: 
       - MAIL_HOSTNAME=s2.ehaupt.de
       - MAIL_DOMAIN=ehaupt.de

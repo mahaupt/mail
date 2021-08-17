@@ -308,8 +308,7 @@ mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 # list this system as their primary or backup MX host. See the
 # permit_mx_backup restriction description in postconf(5).
 #
-relay_domains = proxy:pgsql:/etc/postfix/sql/mysql_relay_domains.cf
-transport_maps = proxy:pgsql:/etc/postfix/sql/mysql_transport_maps.cf
+relay_domains = proxy:pgsql:/etc/postfix/sql/relay_domains.cf
 
 # INTERNET OR INTRANET
 
@@ -374,23 +373,12 @@ transport_maps = proxy:pgsql:/etc/postfix/sql/mysql_transport_maps.cf
 # The VIRTUAL_README document gives information about the many forms
 # of domain hosting that Postfix supports.
 
-virtual_mailbox_domains = proxy:pgsql:/etc/postfix/sql/mysql_virtual_domains_maps.cf
-virtual_alias_maps =
-   proxy:pgsql:/etc/postfix/sql/mysql_virtual_alias_maps.cf,
-   proxy:pgsql:/etc/postfix/sql/mysql_virtual_alias_domain_maps.cf,
-   proxy:pgsql:/etc/postfix/sql/mysql_virtual_alias_domain_catchall_maps.cf
-virtual_mailbox_maps =
-   proxy:pgsql:/etc/postfix/sql/mysql_virtual_mailbox_maps.cf,
-   proxy:pgsql:/etc/postfix/sql/mysql_virtual_alias_domain_mailbox_maps.cf
+virtual_mailbox_domains = proxy:pgsql:/etc/postfix/sql/virtual_domains_maps.cf
+virtual_alias_maps = proxy:pgsql:/etc/postfix/sql/virtual_alias_maps.cf
+virtual_mailbox_maps = proxy:pgsql:/etc/postfix/sql/virtual_mailbox_maps.cf
+virtual_mailbox_limit = 512000000
 local_recipient_maps = $virtual_mailbox_maps
 local_transport = virtual
-
-#virtual_create_maildirsize = yes
-#virtual_mailbox_extended = yes
-#virtual_mailbox_limit_maps = mysql:/etc/postfix/sql/mysql_virtual_mailbox_limit_maps.cf
-#virtual_mailbox_limit_override = yes
-#virtual_maildir_limit_message = Sorry, the user's maildir has overdrawn his diskspace quota, please try again later.
-#virtual_overquota_bounce = yes
 
 virtual_mailbox_base = /var/vmail
 virtual_minimum_uid = 8
@@ -415,6 +403,8 @@ smtpd_sasl_auth_enable = yes
 smtpd_sasl_authenticated_header = yes
 smtpd_recipient_restrictions = permit_sasl_authenticated,permit_mynetworks,reject_unauth_destination
 smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+
+maillog_file = /dev/stdout
 
 # "USER HAS MOVED" BOUNCE MESSAGES
 #

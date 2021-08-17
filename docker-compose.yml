@@ -9,12 +9,13 @@ services:
       - MAIL_HOSTNAME=s2.ehaupt.de
       - MAIL_DOMAIN=ehaupt.de
       - SQL_USER=mail
-      - SQL_PASSWORD=mail
+      - SQL_PASSWORD=postfix
       - SQL_HOST=database
       - SQL_DB=mail
     ports:
       - "25:25"
       - "587:587"
+      - "465:465"
       - "143:143"
       - "993:993"
     volumes:

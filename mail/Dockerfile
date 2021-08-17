@@ -1,6 +1,6 @@
 FROM alpine
 
-RUN apk update && apk add --no-cache postfix dovecot
+RUN apk update && apk add --no-cache postfix dovecot dovecot-pgsql
 ADD ./postfix /etc/postfix
 ADD ./sql /etc/postfix/sql
 ADD ./dovecot /etc/dovecot

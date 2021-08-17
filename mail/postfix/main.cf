@@ -393,10 +393,10 @@ local_transport = virtual
 #virtual_overquota_bounce = yes
 
 virtual_mailbox_base = /var/vmail
-virtual_minimum_uid = 5000
+virtual_minimum_uid = 8
 virtual_transport = lmtp:unix:private/dovecot-lmtp
-virtual_uid_maps = static:5000
-virtual_gid_maps = static:5000
+virtual_uid_maps = static:8
+virtual_gid_maps = static:8
 
 smtp_tls_security_level = may
 smtpd_tls_security_level = may

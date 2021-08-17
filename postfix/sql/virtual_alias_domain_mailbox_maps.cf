@@ -1,0 +1,5 @@
+user = postfix
+password = password
+hosts = localhost
+dbname = postfix
+query = SELECT maildir FROM mailbox,alias_domain WHERE alias_domain.alias_domain = '%d' AND mailbox.username = '%u' || '@' || alias_domain.target_domain AND mailbox.active = true AND alias_domain.active = true

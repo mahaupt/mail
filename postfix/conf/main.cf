@@ -309,6 +309,7 @@ mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 # permit_mx_backup restriction description in postconf(5).
 #
 relay_domains = proxy:pgsql:/etc/postfix/sql/relay_domains.cf
+#transport_maps = proxy:pgsql:/etc/postfix/sql/transport_maps.cf
 
 # INTERNET OR INTRANET
 
@@ -374,8 +375,11 @@ relay_domains = proxy:pgsql:/etc/postfix/sql/relay_domains.cf
 # of domain hosting that Postfix supports.
 
 virtual_mailbox_domains = proxy:pgsql:/etc/postfix/sql/virtual_domains_maps.cf
-virtual_alias_maps = proxy:pgsql:/etc/postfix/sql/virtual_alias_maps.cf
-virtual_mailbox_maps = proxy:pgsql:/etc/postfix/sql/virtual_mailbox_maps.cf
+virtual_alias_maps = proxy:pgsql:/etc/postfix/sql/virtual_alias_maps.cf,
+    proxy:pgsql:/etc/postfix/sql/virtual_alias_domain_maps.cf,
+    proxy:pgsql:/etc/postfix/sql/virtual_alias_domain_catchall_maps.cf
+virtual_mailbox_maps = proxy:pgsql:/etc/postfix/sql/virtual_mailbox_maps.cf,
+    proxy:pgsql:/etc/postfix/sql/virtual_alias_domain_mailbox_maps.cf
 virtual_mailbox_limit = 512000000
 local_recipient_maps = $virtual_mailbox_maps
 local_transport = virtual

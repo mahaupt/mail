@@ -1,0 +1,6 @@
+# handles catch-all settings of target-domain
+user = postfix
+password = password
+hosts = localhost
+dbname = postfix
+query  = SELECT goto FROM alias,alias_domain WHERE alias_domain.alias_domain = '%d' AND alias.address = '%u' || '@' || alias_domain.target_domain AND alias.active = true AND alias_domain.active = true

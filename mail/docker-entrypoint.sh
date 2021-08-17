@@ -11,6 +11,11 @@ sed -i "s/^\(connect\s*=\s*\).*$/\1host=${SQL_HOST} dbname=${SQL_DB} user=${SQL_
 sed -i "s/^\(myhostname\s*=\s*\).*$/\1${MAIL_HOSTNAME}/" /etc/postfix/main.cf
 sed -i "s/^\(mydomain\s*=\s*\).*$/\1${MAIL_DOMAIN}/" /etc/postfix/main.cf
 
+# fix permissions
+chown -R mail:mail /var/vmail
+chmod -R g-w /etc/postfix
+chmod -R g-w /etc/dovecot
+
 #start postfix
 dovecot
 postfix start-fg

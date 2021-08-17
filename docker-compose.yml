@@ -17,6 +17,7 @@ services:
     volumes:
       - "${CERT_LOCATION_CHAIN}:/cert/fullchain.pem:ro"
       - "${CERT_LOCATION_KEY}:/cert/privkey.pem:ro"
+      - mailStore:/var/vmail
 
   dovecot:
     build: dovecot

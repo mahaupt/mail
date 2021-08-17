@@ -11,6 +11,7 @@ sed -i "s/^\(myhostname\s*=\s*\).*$/\1${MAIL_HOSTNAME}/" /etc/postfix/main.cf
 sed -i "s/^\(mydomain\s*=\s*\).*$/\1${MAIL_DOMAIN}/" /etc/postfix/main.cf
 
 # fix permissions
+chown -R mail:mail /var/vmail
 chmod -R g-w /etc/postfix
 
 #start postfix

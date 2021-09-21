@@ -714,4 +714,4 @@ readme_directory = /usr/share/doc/postfix/readme
 inet_protocols = ipv4
 meta_directory = /etc/postfix
 shlib_directory = /usr/lib/postfix
-
+message_size_limit = 51200000

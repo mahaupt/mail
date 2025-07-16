@@ -5,6 +5,7 @@ services:
     build: postfix
     depends_on:
       - database
+      - opendkim
     restart: always
     env_file: 
       - .env
@@ -35,6 +36,15 @@ services:
       - "${CERT_LOCATION_CHAIN}:/cert/fullchain.pem:ro"
       - "${CERT_LOCATION_KEY}:/cert/privkey.pem:ro"
       - mailStore:/var/vmail
+
+  opendkim:
+    image: instrumentisto/opendkim:latest
+    restart: always
+    env_file: 
+      - .env
+    volumes:
+      - ./opendkim/config:/etc/opendkim/conf
+      - ./opendkim/keys:/etc/opendkim/keys
 
   database:
     image: postgres:13

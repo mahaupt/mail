@@ -36,7 +36,7 @@ services:
       - mailStore:/var/vmail
 
   opendkim:
-    image: instrumentisto/opendkim:latest
+    build: opendkim
     restart: always
     env_file: 
       - .env

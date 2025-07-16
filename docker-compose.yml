@@ -38,6 +38,7 @@ services:
   opendkim:
     build: opendkim
     restart: always
+    container_name: opendkim
     env_file: 
       - .env
     volumes:
